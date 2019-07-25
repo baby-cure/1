@@ -1,0 +1,18 @@
+#!/bin/bash
+while :
+do
+  awk '{x++}END{print "主机拥有账户总数为"x"个"}' /etc/passwd
+  x=`who | wc -l`
+  echo "当前登录账户为$x个"
+  psn=`ps aux | wc -l`
+  echo "主机运行的进程有$psn个"
+  uptime | awk '{print "cpu的平均负载为"$10,$11,$12"个"}'
+  free -m | awk '/^Mem/{print "主机剩余内存为"$4"M"}'
+  df -h | awk '/vda1/{print "硬盘剩余空间为"$4}'
+  ifconfig eth0 | awk '/RX p/{print "网卡eth0接收的数据流量为"$5"字节"}'
+  p=`rpm -qa | wc -l`
+  echo "当前主机安装的软件包的数量为$p"
+sleep 3
+clear
+done
+
